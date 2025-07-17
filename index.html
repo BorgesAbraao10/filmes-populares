@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Filmes Populares</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #111;
+            color: #fff;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .filmes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .filme {
+            width: 200px;
+            text-align: center;
+        }
+
+        .filme img {
+            width: 100%;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🎬 Filmes Populares</h1>
+    <div class="filmes" id="filmes"></div>
+
+    <script>
+        const API_KEY = '1f044149653f684e988c7b4a718ca1f3'; 
+        const BASE_URL = 'https://api.themoviedb.org/3';
+        const endpoint = `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=pt-BR&page=1`;
+        const IMG_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+
+        async function carregarFilmes() {
+            try {
+                const resposta = await fetch(endpoint);
+                const dados = await resposta.json();
+                const container = document.getElementById('filmes');
+
+                dados.results.forEach(filme => {
+                    const div = document.createElement('div');
+                    div.classList.add('filme');
+
+                    div.innerHTML = `
+            <img src="${IMG_BASE_URL}${filme.poster_path}" alt="${filme.title}">
+            <h3>${filme.title}</h3>
+          `;
+
+                    container.appendChild(div);
+                });
+            } catch (erro) {
+                console.error('Erro ao carregar filmes:', erro.message);
+            }
+        }
+
+        carregarFilmes();
+    </script>
+</body>
+
+</html>
